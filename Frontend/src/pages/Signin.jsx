@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import FormField from "../components/FormField";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import ErrorDialog from "../components/ErrorDialog";
 import Loader from "../components/Loader";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,6 +22,7 @@ const Signin = () => {
   const [errorMsg, setErrorMsg] = useState("");
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { loading } = useSelector((state) => state.user);
 
   const handleChange = (e) => {
@@ -34,6 +36,7 @@ const Signin = () => {
       setError(false);
       setErrorMsg("");
       dispatch(signInSuccess(response.data));
+      navigate("/")
     } catch (e) {
       setError(true);
       setErrorMsg(e.response.data.message);
