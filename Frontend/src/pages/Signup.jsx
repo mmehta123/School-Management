@@ -3,6 +3,7 @@ import FormField from "../components/FormField";
 import axios from "axios";
 import ErrorDialog from "../components/ErrorDialog";
 import Loader from "../components/Loader";
+import Notification from "../components/Notification";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +13,7 @@ const Signup = () => {
   });
   const [error, setError] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [notification, setNotification] = useState(false);
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
@@ -21,8 +23,15 @@ const Signup = () => {
       const response = await axios.post("/api/auth/signup/", formData);
       setError(false);
       setErrorMsg("");
+      if (response.data.success) {
+        setNotification(true);
+        setTimeout(() => {
+          setNotification(false);
+        }, 3000);
+      }
     } catch (e) {
       setError(true);
+      setNotification(false);
       setErrorMsg(e.response.data.message);
       //after 3 sec disappers
       setTimeout(() => {
@@ -34,6 +43,12 @@ const Signup = () => {
   return (
     <div className=" w-[100vw]  min-h-screen flex justify-center items-center bg-[url(https://mis.oneschoolsuite.com/bg-main.f709bcd94b8899030cd7.jpg)]">
       <div className="w-full sm:w-[60%] h-[90%] sm:h-[70%] overflow-hidden sm:rounded-2xl sm:flex-row flex-col flex">
+        {notification && (
+          <Notification
+            header="Account Created Succefully"
+            msg="You can Now Sign In"
+          />
+        )}
         {/* right */}
         <div className="sm:w-1/2 w-full p-7 sm:p-14 bg-violet flex flex-wrap flex-col justify-center items-center">
           <div className=" ">
@@ -45,7 +60,9 @@ const Signup = () => {
         </div>
         {/* right */}
         <div className="flex-1 h-full  relative bg-white ">
-          {error && <ErrorDialog msg={errorMsg} />}
+          {error && (
+            <Notification header={errorMsg} msg="Try Again with Valid credentials" err />
+          )}
           <div className="p-7 sm:p-14  ">
             <form onSubmit={submitData}>
               <div className="mb-6">

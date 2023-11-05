@@ -3,7 +3,9 @@ import FormField from "../components/FormField";
 import axios from "axios";
 import ErrorDialog from "../components/ErrorDialog";
 import Loader from "../components/Loader";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import Notification from "../components/Notification";
+
 import {
   signInStart,
   signInSuccess,
@@ -19,6 +21,7 @@ const Signin = () => {
   const [errorMsg, setErrorMsg] = useState("");
 
   const dispatch = useDispatch();
+  const { loading } = useSelector((state) => state.user);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -28,14 +31,13 @@ const Signin = () => {
     e.preventDefault();
     try {
       const response = await axios.post("/api/auth/signin/", formData);
-      console.log(response)
       setError(false);
       setErrorMsg("");
       dispatch(signInSuccess(response.data));
     } catch (e) {
       setError(true);
       setErrorMsg(e.response.data.message);
-      dispatch(signInFail());
+      dispatch(signInFail(e.response.data.message));
       //after 3 sec disappers
       setTimeout(() => {
         setError(false);
@@ -55,9 +57,15 @@ const Signin = () => {
             </h1>
           </div>
         </div>
-        {/* right */}
+        {/* left */}
         <div className="flex-1 h-full  relative bg-white ">
-          {error && <ErrorDialog msg={errorMsg} />}
+          {error && (
+            <Notification
+              header={errorMsg}
+              msg="Try Again with Valid credentials"
+              err
+            />
+          )}
 
           <div className="p-7 sm:p-14  ">
             <form onSubmit={submitData}>
@@ -105,7 +113,10 @@ const Signin = () => {
               {/* <button className="px-4 py-2 bg-gradient-to-r from-blue-400 to-blue-600 text-white rounded-full hover:from-blue-600 hover:to-blue-800 transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
               Beautiful Button
             </button> */}
-              <button className="text-center w-full bg-violet p-2 mt-6 hover:bg-blue-700 rounded-lg font-semibold text-white">
+              <button
+                type="submit"
+                className="text-center w-full bg-violet p-2 mt-6 hover:bg-blue-700 rounded-lg font-semibold text-white"
+              >
                 Sign in
               </button>
             </form>
