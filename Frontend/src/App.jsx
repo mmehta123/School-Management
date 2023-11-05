@@ -7,18 +7,21 @@ import SchoolProfile from "./pages/SchoolProfile";
 import StudentProfile from "./pages/StudentProfile";
 import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
+import PrivateRoute from "./components/PrivateRoutes";
 
 const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
         <Route path="/signin" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/student" element={<StudentProfile />} />
-        <Route path="/school" element={<SchoolProfile />} />
-        <Route path="/addmission" element={<Addmission />} />
-        <Route path="/issue-slc" element={<IssueSLC />} />
+        <Route element={<PrivateRoute />}>
+          <Route path="/home" element={<Home />} />
+          <Route path="/student" element={<StudentProfile />} />
+          <Route path="/school" element={<SchoolProfile />} />
+          <Route path="/addmission" element={<Addmission />} />
+          <Route path="/issue-slc" element={<IssueSLC />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

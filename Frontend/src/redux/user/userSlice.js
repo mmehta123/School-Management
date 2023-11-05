@@ -44,6 +44,6 @@ export const {
   signOutStart,
   signOutFail,
   signOutSuccess,
-} = counterSlice.actions;
+} = userSlice.actions;
 
 export default userSlice.reducer;

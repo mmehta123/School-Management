@@ -5,8 +5,8 @@ const errorHandler = require("../utils/error.js");
 
 const signIn = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
-    const user = await UserModel.findOne({ email });
+    const { username, password } = req.body;
+    const user = await UserModel.findOne({ username });
     if (!user) {
       return next(errorHandler(404, "User Not Found!"));
     }
@@ -32,8 +32,8 @@ const signIn = async (req, res, next) => {
 const signUp = async (req, res, next) => {
   try {
     const { email, password, username } = req.body;
-    const user = await UserModel.findOne({ username });
-    if (user) {
+    const user = await UserModel.find({ $or: [{ username }, { email }] });
+    if (user.length !== 0) {
       return next(errorHandler(409, "User Already Exists!"));
     }
     const hashedPass = bcrypt.hashSync(password, 10);
@@ -54,5 +54,5 @@ const signOut = (req, res) => {
 module.exports = {
   signIn,
   signUp,
-  signOut
+  signOut,
 };
