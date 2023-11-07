@@ -11,19 +11,18 @@ const studentSchema = new mongoose.Schema(
       required: true,
     },
     aadhar: {
-      type: String,
+      type: Number,
       required: true,
       unique: true,
     },
     srn: {
-      type: String,
+      type: Number,
       required: true,
       unique: true,
     },
     rollno: {
       type: Number,
       required: true,
-      unique: true,
     },
     mothername: {
       type: String,
@@ -33,13 +32,24 @@ const studentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    active:{
-      type:Boolean,
-      default:true
-    }
+    active: {
+      type: Boolean,
+      default: true,
+    },
+    parentSchoolId: {
+      type: String,
+      required: true,
+    },
+    standard: {
+      type: Number,
+      required: true,
+      default: 1,
+      unique:false
+    },
   },
   { timestamps: true, versionKey: false }
 );
 
 const Student = mongoose.model("Student", studentSchema);
-module.exports = Student;
+const GlobalStudent = mongoose.model("GlobalStudent", studentSchema);
+module.exports = { Student, GlobalStudent };

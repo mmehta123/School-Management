@@ -16,6 +16,11 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    schoolName: {
+      type: String,
+      required: false,
+      default:"ABC Public School"
+    },
   },
   { timestamps: true, versionKey: false }
 );

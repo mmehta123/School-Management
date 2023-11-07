@@ -17,11 +17,13 @@ import IssueSLC from "../pages/IssueSLC";
 import ReAddmission from "../pages/ReAddmission.jsx";
 import Reports from "../pages/Reports.jsx";
 import DashBoard from "../pages/DashBoard.jsx";
+import SchoolProfile from "../pages/SchoolProfile.jsx";
 
 const navigation = [
   { name: "School Dashboard", href: "#", icon: HomeIcon, current: true },
   { name: "Addmission", href: "#", icon: PlusCircleIcon, current: false },
   { name: "Student Profile", href: "#", icon: UsersIcon, current: false },
+  { name: "School Profile", href: "#", icon: UsersIcon, current: false },
   { name: "Issue SLC", href: "#", icon: DocumentArrowUpIcon, current: false },
   { name: "ReAdmission", href: "#", icon: ArrowLeftCircleIcon, current: false },
   {
@@ -41,10 +43,12 @@ const RenderMainContent = (index) => {
     case 2:
       return <StudentProfile />;
     case 3:
-      return <IssueSLC />;
+      return <SchoolProfile />;
     case 4:
-      return <ReAddmission />;
+      return <IssueSLC />;
     case 5:
+      return <ReAddmission />;
+    case 6:
       return <Reports />;
     default:
       return <Home />;
