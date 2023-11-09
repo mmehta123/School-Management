@@ -20,15 +20,14 @@ import DashBoard from "../pages/DashBoard.jsx";
 import SchoolProfile from "../pages/SchoolProfile.jsx";
 
 const navigation = [
-  { name: "School Dashboard", href: "#", icon: HomeIcon, current: true },
-  { name: "Addmission", href: "#", icon: PlusCircleIcon, current: false },
-  { name: "Student Profile", href: "#", icon: UsersIcon, current: false },
-  { name: "School Profile", href: "#", icon: UsersIcon, current: false },
-  { name: "Issue SLC", href: "#", icon: DocumentArrowUpIcon, current: false },
-  { name: "ReAdmission", href: "#", icon: ArrowLeftCircleIcon, current: false },
+  { name: "School Dashboard", icon: HomeIcon, current: true },
+  { name: "Addmission", icon: PlusCircleIcon, current: false },
+  { name: "Student Profile", icon: UsersIcon, current: false },
+  { name: "School Profile", icon: UsersIcon, current: false },
+  { name: "Issue SLC", icon: DocumentArrowUpIcon, current: false },
+  { name: "ReAdmission", icon: ArrowLeftCircleIcon, current: false },
   {
     name: "Reports",
-    href: "#",
     icon: PresentationChartBarIcon,
     current: false,
   },
@@ -73,7 +72,9 @@ export default function Sidebar() {
     const dummyArr = [...navOptions];
     dummyArr.map((item, i) => {
       if (i === index) {
+        //this is to open the component
         setCurrentTab(index);
+        //this is to make active color in sidebar options
         item.current = true;
       } else {
         item.current = false;
@@ -113,7 +114,7 @@ export default function Sidebar() {
                 leaveFrom="translate-x-0"
                 leaveTo="-translate-x-full"
               >
-                <Dialog.Panel className="relative flex w-full max-w-xs flex-1 flex-col bg-indigo-700">
+                <Dialog.Panel className="relative flex w-full max-w-xs flex-1 flex-col bg-[#191a56]">
                   <Transition.Child
                     as={Fragment}
                     enter="ease-in-out duration-300"
@@ -139,7 +140,7 @@ export default function Sidebar() {
                   </Transition.Child>
                   <div className="h-0 flex-1 overflow-y-auto pt-5 pb-4">
                     <div className="flex flex-shrink-0 items-center px-4">
-                      <h3>School Name</h3>
+                      <h3 className="text-white">Welcome, School Name</h3>
                     </div>
                     <nav className="mt-5 space-y-1 px-2">
                       {navOptions.map((item, index) => {
@@ -149,12 +150,11 @@ export default function Sidebar() {
                               handleSidebarNavClick(index, "mobile")
                             }
                             key={item.name}
-                            to={item.href}
                             className={classNames(
                               item.current
-                                ? "bg-indigo-800 text-white"
-                                : "text-white hover:bg-indigo-600 hover:bg-opacity-75",
-                              "group flex items-center px-2 py-2 text-base font-medium rounded-md"
+                                ? "bg-white text-slate-600"
+                                : "text-white hover:bg-slate-100 hover:bg-opacity-20",
+                              "group cursor-pointer flex items-center px-2 py-2 text-base font-medium rounded-md"
                             )}
                           >
                             <item.icon
@@ -178,22 +178,21 @@ export default function Sidebar() {
 
         {/* Static sidebar for desktop */}
         <div className="hidden md:fixed md:inset-y-0 md:flex md:w-64">
-          <div className=" flex min-h-0 flex-1 flex-col bg-indigo-900">
+          <div className=" flex min-h-0 flex-1 flex-col bg-[#191a56]">
             <div className="flex flex-1 flex-col overflow-y-auto pt-5 pb-4">
               <div className="flex flex-shrink-0 items-center px-4">
-                <h2>School Name</h2>
+                <h2 className="text-white">Welcome School Name</h2>
               </div>
               <nav className="mt-5 flex-1 space-y-1 px-2">
                 {navOptions.map((item, index) => (
                   <div
                     onClick={() => handleSidebarNavClick(index)}
                     key={item.name}
-                    to={item.href}
                     className={classNames(
                       item.current
-                        ? "bg-indigo-800 text-white"
-                        : "text-white hover:bg-indigo-600 hover:bg-opacity-75",
-                      "group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+                        ? "bg-white text-slate-600"
+                        : "text-white hover:bg-slate-100 hover:bg-opacity-20",
+                      "group flex cursor-pointer items-center px-2 py-2 text-sm font-medium rounded-md"
                     )}
                   >
                     <item.icon
