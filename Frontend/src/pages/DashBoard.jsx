@@ -69,7 +69,7 @@ const DashBoard = () => {
           </div>
         </div>
       </div>
-      <Table people={people}/>
+      <Table tableData={people} title="Classwise Student Count" sub="Acedemic Year(2023-24)"/>
     </div>
   );
 };

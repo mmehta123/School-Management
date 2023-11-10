@@ -1,14 +1,27 @@
-import React from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 
-const Table = ({ people }) => {
+const Table = ({ tableData, title, sub }) => {
+  const [headerArr, setHeaderArr] = useState([]);
+  const [valuesArr, setValuesArr] = useState([]);
+
+  useLayoutEffect(() => {
+    if (tableData.length) {
+      setHeaderArr(Object.keys(tableData[0]));
+      let dummyArr = [];
+      tableData.forEach((person) => {
+        dummyArr.push(Object.values(person));
+      });
+      setValuesArr(dummyArr);
+    }
+  }, [tableData]);
   return (
     <div className="px-4 sm:px-6 lg:px-8 bg-white shadow-lg  py-4 rounded-none sm:rounded-lg">
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto sm:flex sm:justify-between">
-          <h1 className="text-xl font-semibold text-gray-900">
-            Classwise Student Count
-          </h1>
-          <p className="mt-1 text-sm text-gray-700">Acedemic Year(2023-24)</p>
+          {title && (
+            <h1 className="text-xl font-semibold text-gray-900">{title}</h1>
+          )}
+          {sub && <p className="mt-1 text-sm text-gray-700">{sub}</p>}
         </div>
       </div>
       <div className="mt-8 flex flex-col  ">
@@ -18,47 +31,31 @@ const Table = ({ people }) => {
               <table className="min-w-full divide-y divide-gray-300">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th
-                      scope="col"
-                      className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
-                    >
-                      Name
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      Aadhar No.
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      Roll No.
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      Standard
-                    </th>
+                    {headerArr &&
+                      headerArr.map((header) => (
+                        <th
+                          scope="col"
+                          className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
+                        >
+                          {header}
+                        </th>
+                      ))}
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white ">
-                  {people.map((person) => (
-                    <tr key={person.rollno}>
-                      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                        {person.name}
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {person.aadhar}
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {person.rollno}
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {person.standard}
-                      </td>
+                  {valuesArr.map((dataArr, i) => (
+                    <tr key={i}>
+                      {dataArr.map((finalItem, index) => (
+                        <td
+                          className={
+                            index === 0
+                              ? "whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6"
+                              : "whitespace-nowrap px-3 py-4 text-sm text-gray-500"
+                          }
+                        >
+                          {finalItem}
+                        </td>
+                      ))}
                     </tr>
                   ))}
                 </tbody>
