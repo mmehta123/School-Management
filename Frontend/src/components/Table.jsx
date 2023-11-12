@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
 
-const Table = ({ tableData, title, sub }) => {
+const Table = ({ tableData, title, sub, btn, handleClick }) => {
   const [headerArr, setHeaderArr] = useState([]);
   const [valuesArr, setValuesArr] = useState([]);
 
@@ -14,6 +14,7 @@ const Table = ({ tableData, title, sub }) => {
       setValuesArr(dummyArr);
     }
   }, [tableData]);
+
   return (
     <div className="px-4 sm:px-6 lg:px-8 bg-white shadow-lg  py-4 rounded-none sm:rounded-lg">
       <div className="sm:flex sm:items-center">
@@ -49,13 +50,20 @@ const Table = ({ tableData, title, sub }) => {
                         <td
                           className={
                             index === 0
-                              ? "whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6"
-                              : "whitespace-nowrap px-3 py-4 text-sm text-gray-500"
+                              ? "whitespace-nowrap py-4 pl-4 text-center pr-3 text-sm font-medium text-gray-900 sm:pl-6"
+                              : "whitespace-nowrap px-3 py-4 text-center text-sm text-gray-500"
                           }
                         >
                           {finalItem}
                         </td>
                       ))}
+                      {btn && (
+                        <div className="flex items-center justify-center">
+                          <button onClick={()=>handleClick(tableData[i].srn)} className="w-full m-2 p-2 border border-transparent  font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            {btn}
+                          </button>
+                        </div>
+                      )}
                     </tr>
                   ))}
                 </tbody>

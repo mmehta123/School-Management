@@ -87,7 +87,7 @@ const reAdmission = async (req, res, next) => {
           errorHandler(404, "student not found / Or does not have SLC")
         );
       // Generate a new unique roll number based on the student's standard
-      //this function give us local latest student of same standard as we want to admit new student in.means give us last roll no of class 
+      //this function give us local latest student of same standard as we want to admit new student in.means give us last roll no of class
       const latestStudent = await Student.findOne({
         standard: student.standard,
       })
@@ -139,11 +139,47 @@ const reAdmission = async (req, res, next) => {
     return next(error);
   }
 };
-
+/////////////////////////All Student List ////////////////////
+const getAll = async (req, res, next) => {
+  try {
+    const students = await Student.find({ parentSchoolId: req.user.id });
+    return res.status(200).json({
+      success: true,
+      students: students,
+      message: "All Student List",
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+/////////////////////////Search Student For SLC ////////////////////
+const searchStudentForSLC = async (req, res, next) => {
+  try {
+    const student = await Student.findOne({
+      $or: [{ srn: req.body.srn }, { aadhar: req.body.aadhar }],
+      parentSchoolId: req.user.id,
+    });
+    
+    if (!student) {
+      return res.status(404).json({
+        success: false,
+        message: "student not found",
+      });
+    }
+    const {_id:a,createdAt:b,parentSchoolId:c,updatedAt:d,dob:e,...rest}=student._doc
+    return res.status(200).json({
+      success: true,
+      student: rest,
+      message: "student found",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 /////////////////////////Student SLC ////////////////////
 const issueSlc = async (req, res, next) => {
   try {
-    const student = await findOne({ srn: req.params.srn });
+    const student = await Student.findOne({ srn: req.body.srn });
     if (!student) {
       return res
         .status(404)
@@ -153,10 +189,10 @@ const issueSlc = async (req, res, next) => {
       return res.status(401).json({ success: false, message: "Unauthorized" });
     }
     // deltet student from local (School DB)
-    await Student.findOneAndDelete({ srn: req.params.srn });
+    await Student.findOneAndDelete({ srn: req.body.srn });
     // updated details of current student to active false(means not in school now and student current school to xxxxxxx)
     await GlobalStudent.findOneAndUpdate(
-      { srn: req.params.srn },
+      { srn: req.body.srn },
       { $set: { active: false, parentSchoolId: "xxxxxxxxxxxxx" } },
       { new: true }
     );
@@ -218,4 +254,12 @@ const editStudentProfile = async (req, res, next) => {
   }
 };
 
-module.exports = { add, view, issueSlc, editStudentProfile, reAdmission };
+module.exports = {
+  add,
+  view,
+  getAll,
+  issueSlc,
+  editStudentProfile,
+  reAdmission,
+  searchStudentForSLC,
+};
