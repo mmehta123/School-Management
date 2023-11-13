@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
 
-const Table = ({ tableData, title, sub, btn, handleClick }) => {
+const Table = ({ tableData, title, sub, btn, handleClick, disableBtn }) => {
   const [headerArr, setHeaderArr] = useState([]);
   const [valuesArr, setValuesArr] = useState([]);
 
@@ -36,7 +36,7 @@ const Table = ({ tableData, title, sub, btn, handleClick }) => {
                       headerArr.map((header) => (
                         <th
                           scope="col"
-                          className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
+                          className="py-3.5 pl-4 pr-3 text-center text-sm font-semibold text-gray-900 sm:pl-6"
                         >
                           {header}
                         </th>
@@ -44,9 +44,9 @@ const Table = ({ tableData, title, sub, btn, handleClick }) => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white ">
-                  {valuesArr.map((dataArr, i) => (
+                  {valuesArr.map((singleRow, i) => (
                     <tr key={i}>
-                      {dataArr.map((finalItem, index) => (
+                      {singleRow.map((finalItem, index) => (
                         <td
                           className={
                             index === 0
@@ -54,12 +54,16 @@ const Table = ({ tableData, title, sub, btn, handleClick }) => {
                               : "whitespace-nowrap px-3 py-4 text-center text-sm text-gray-500"
                           }
                         >
-                          {finalItem}
+                          {String(finalItem) === "true" ? "Yes" : finalItem}
                         </td>
                       ))}
                       {btn && (
                         <div className="flex items-center justify-center">
-                          <button onClick={()=>handleClick(tableData[i].srn)} className="w-full m-2 p-2 border border-transparent  font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                          <button
+                            disabled={disableBtn}
+                            onClick={() => handleClick(tableData[i].srn)}
+                            className="w-full m-2 p-2 border border-transparent  font-medium rounded-md shadow-sm text-white bg-red-600 disabled:bg-gray-500 disabled:hover:bg-slate-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                          >
                             {btn}
                           </button>
                         </div>

@@ -17,7 +17,6 @@ const IssueSLC = () => {
     const response = await axios.post("/api/student/issueSLC", {
       srn: selectedSrn,
     });
-    console.log(response);
     if (response.data.success) {
       setStudentDetail(null);
       setInput({ srn: "", aadhar: "" });
@@ -39,18 +38,17 @@ const IssueSLC = () => {
     }
   };
   const handleSearch = async () => {
+    setStudentDetail(null);
     const response = await axios.post("/api/student/search", {
       srn: input.srn,
       aadhar: input.aadhar,
+      issueSLc: true,
     });
     setStudentDetail(response.data.student);
   };
-  async function handleIssueClick(srn) {
+  function handleIssueClick(srn) {
     setSelectedSrn(srn);
     setOpenConfirmPopup(true);
-    // const response=await axios.post("/api/student/issueSLC",{
-    //   srn:srn
-    // });
   }
   return (
     <div className="mx-auto max-w-7xl  px-4 py-2 sm:py-6 sm:px-6 lg:px-8">

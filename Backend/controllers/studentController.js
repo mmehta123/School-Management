@@ -124,9 +124,17 @@ const reAdmission = async (req, res, next) => {
         },
         { new: true }
       );
+      const {
+        _id: a,
+        createdAt: b,
+        parentSchoolId: c,
+        updatedAt: d,
+        dob: e,
+        ...rest
+      } = admittedStudent._doc;
       return res.status(200).json({
         success: true,
-        student: admittedStudent,
+        student: rest,
         message: "student Readmission Succesful",
       });
     } else {
@@ -155,18 +163,39 @@ const getAll = async (req, res, next) => {
 /////////////////////////Search Student For SLC ////////////////////
 const searchStudentForSLC = async (req, res, next) => {
   try {
-    const student = await Student.findOne({
-      $or: [{ srn: req.body.srn }, { aadhar: req.body.aadhar }],
-      parentSchoolId: req.user.id,
-    });
-    
+    let student;
+    if (req.body.issueSLc) {
+      student = await Student.findOne({
+        $or: [{ srn: req.body.srn }, { aadhar: req.body.aadhar }],
+        parentSchoolId: req.user.id,
+        active: true,
+      });
+    } else if (req.body.reAdmission) {
+      student = await GlobalStudent.findOne({
+        $or: [{ srn: req.body.srn }, { aadhar: req.body.aadhar }],
+        active: false,
+      });
+    } else {
+      student = await Student.findOne({
+        $or: [{ srn: req.body.srn }, { aadhar: req.body.aadhar }],
+        parentSchoolId: req.user.id,
+      });
+    }
+
     if (!student) {
       return res.status(404).json({
         success: false,
         message: "student not found",
       });
     }
-    const {_id:a,createdAt:b,parentSchoolId:c,updatedAt:d,dob:e,...rest}=student._doc
+    const {
+      _id: a,
+      createdAt: b,
+      parentSchoolId: c,
+      updatedAt: d,
+      dob: e,
+      ...rest
+    } = student._doc;
     return res.status(200).json({
       success: true,
       student: rest,
