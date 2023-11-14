@@ -7,6 +7,7 @@ import Popup from "../components/Popup";
 const IssueSLC = () => {
   const [input, setInput] = useState({ srn: "", aadhar: "" });
   const [studentDetail, setStudentDetail] = useState(null);
+  const [classwiseStudent, setClasswiseStudent] = useState([]);
 
   const [openConfirmPopup, setOpenConfirmPopup] = useState(false);
   const [confirmIssueSlc, setConfirmIssueSlc] = useState(false);
@@ -25,6 +26,14 @@ const IssueSLC = () => {
       setSlcSuccess(true);
     }
   };
+  useEffect(() => {
+    const getall = async () => {
+      const response = await axios.get("/api/student/allstudents");
+      setClasswiseStudent(response.data.students);
+    };
+    getall();
+  }, [slcSuccess]);
+
   useEffect(() => {
     if (confirmIssueSlc) {
       slcFunction();
@@ -92,6 +101,14 @@ const IssueSLC = () => {
           handleClick={handleIssueClick}
         />
       )}
+      {classwiseStudent.length > 0 && !studentDetail ? (
+        <Table
+        title="Students In School"
+          tableData={classwiseStudent}
+          btn="Issue"
+          handleClick={handleIssueClick}
+        />
+      ):""}
       {openConfirmPopup && (
         <Popup
           setOpen={setOpenConfirmPopup}

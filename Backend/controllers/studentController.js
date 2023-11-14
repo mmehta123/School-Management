@@ -150,7 +150,25 @@ const reAdmission = async (req, res, next) => {
 /////////////////////////All Student List ////////////////////
 const getAll = async (req, res, next) => {
   try {
-    const students = await Student.find({ parentSchoolId: req.user.id });
+    // const students = await Student.find({ parentSchoolId: req.user.id });
+    const students = await Student.aggregate([
+      { $match: { parentSchoolId: req.user.id } }, // Filter by parentSchoolId
+      { $sort: { standard: 1, rollno: 1 } }, // Sort by standard and then by rollno
+      {
+        //fields sent to frontend
+        $project: {
+          name: 1,
+          srn: 1,
+          aadhar: 1,
+          standard: 1,
+          rollno: 1,
+          fathername: 1,
+          mothername: 1,
+          dob: 1,
+          active:1
+        },
+      },
+    ]);
     return res.status(200).json({
       success: true,
       students: students,
@@ -193,7 +211,6 @@ const searchStudentForSLC = async (req, res, next) => {
       createdAt: b,
       parentSchoolId: c,
       updatedAt: d,
-      dob: e,
       ...rest
     } = student._doc;
     return res.status(200).json({
