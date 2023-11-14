@@ -87,7 +87,7 @@ const Addmission = () => {
   return (
     <div className="mx-auto max-w-7xl  px-4 py-2 sm:py-6 sm:px-6 lg:px-8">
       <h2 className="text-2xl font-semibold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
-        School DashBoard
+        New Admission
       </h2>
       <form onSubmit={handleSubmit} className="p-2 mt-12">
         <div className="flex">

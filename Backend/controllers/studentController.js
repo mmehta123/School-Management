@@ -157,6 +157,7 @@ const getAll = async (req, res, next) => {
       {
         //fields sent to frontend
         $project: {
+          _id:0,
           name: 1,
           srn: 1,
           aadhar: 1,
@@ -165,7 +166,7 @@ const getAll = async (req, res, next) => {
           fathername: 1,
           mothername: 1,
           dob: 1,
-          active:1
+          active: 1,
         },
       },
     ]);
@@ -176,6 +177,40 @@ const getAll = async (req, res, next) => {
     });
   } catch (error) {
     return next(error);
+  }
+};
+
+/////////////////////////Classwise Student List For Dashboard Table////////////////////
+const getClasswiseStudent = async (req, res, next) => {
+  try {
+    const students = await Student.aggregate([
+      {
+        $match: { parentSchoolId: req.user.id },
+      },
+      {
+        $group: {
+          _id: "$standard",
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          standard: "$_id",
+          Students: "$count",
+        },
+      },
+      {
+        $sort: { standard: 1 }, // Sort by standard
+      },
+    ]);
+    return res.status(200).json({
+      success: true,
+      students: students,
+      message: "Number of students in each standard",
+    });
+  } catch (e) {
+    return next(e);
   }
 };
 /////////////////////////Search Student For SLC ////////////////////
@@ -308,4 +343,5 @@ module.exports = {
   editStudentProfile,
   reAdmission,
   searchStudentForSLC,
+  getClasswiseStudent,
 };

@@ -79,7 +79,7 @@ const Table = ({ tableData, title, sub, btn, handleClick, disableBtn }) => {
                           scope="col"
                           className="py-3.5 pl-4 pr-3 text-center text-sm font-semibold text-gray-900 sm:pl-6"
                         >
-                          {header}
+                          {header.toUpperCase()}
                         </th>
                       ))}
                   </tr>

@@ -1,15 +1,16 @@
-import React from "react";
-import Table from "../components/Table.jsx"
-
-const people = [
-  { name: 'Lindsay Walton', aadhar: '123456789-10-11', rollno: '1', standard: '1' },
-  { name: 'Lindsay Walton', aadhar: '123456789-10-11', rollno: '1', standard: '1' },
-  { name: 'Lindsay Walton', aadhar: '123456789-10-11', rollno: '1', standard: '1' },
-  { name: 'Lindsay Walton', aadhar: '123456789-10-11', rollno: '1', standard: '1' },
-  { name: 'Lindsay Walton', aadhar: '123456789-10-11', rollno: '1', standard: '1' },
-]
+import React, { useEffect, useState } from "react";
+import Table from "../components/Table.jsx";
+import axios from "axios";
 
 const DashBoard = () => {
+  const [students, setStudents] = useState([]);
+  async function getStudents() {
+    const response = await axios.get("/api/student/classwisedata");
+    setStudents(response.data.students);
+  }
+  useEffect(() => {
+    getStudents();
+  }, []);
   return (
     <div className="mx-auto max-w-7xl bg-slate-200 px-4 py-2 sm:py-6 sm:px-6 lg:px-8">
       <h2 className="text-2xl font-semibold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
@@ -69,7 +70,13 @@ const DashBoard = () => {
           </div>
         </div>
       </div>
-      <Table tableData={people} title="Classwise Student Count" sub="Acedemic Year(2023-24)"/>
+      {students.length > 0 && (
+        <Table
+          tableData={students}
+          title="Classwise Student Count"
+          sub="Acedemic Year(2023-24)"
+        />
+      )}
     </div>
   );
 };
