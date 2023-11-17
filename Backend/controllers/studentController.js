@@ -157,16 +157,14 @@ const getAll = async (req, res, next) => {
       {
         //fields sent to frontend
         $project: {
-          _id:0,
+          _id: 0,
           name: 1,
           srn: 1,
           aadhar: 1,
           standard: 1,
           rollno: 1,
           fathername: 1,
-          mothername: 1,
           dob: 1,
-          active: 1,
         },
       },
     ]);

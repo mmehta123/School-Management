@@ -3,6 +3,7 @@ import FormField from "../components/FormField";
 import axios from "axios";
 import Table from "../components/Table";
 import Popup from "../components/Popup";
+import Filter from "../components/Filter";
 
 const IssueSLC = () => {
   const [input, setInput] = useState({ srn: "", aadhar: "" });
@@ -13,6 +14,7 @@ const IssueSLC = () => {
   const [confirmIssueSlc, setConfirmIssueSlc] = useState(false);
   const [selectedSrn, setSelectedSrn] = useState(null);
   const [slcSuccess, setSlcSuccess] = useState(false);
+  const [filteredStudents, setFilteredStudents] = useState(null);
 
   const slcFunction = async () => {
     const response = await axios.post("/api/student/issueSLC", {
@@ -30,6 +32,7 @@ const IssueSLC = () => {
     const getall = async () => {
       const response = await axios.get("/api/student/allstudents");
       setClasswiseStudent(response.data.students);
+      setFilteredStudents(response.data.students);
     };
     getall();
   }, [slcSuccess]);
@@ -59,6 +62,28 @@ const IssueSLC = () => {
     setSelectedSrn(srn);
     setOpenConfirmPopup(true);
   }
+
+  //function for filter
+  const handleFilterInput = ({ name, standard }) => {
+    let dummyArr = classwiseStudent;
+    if (name.length > 0 && standard.length > 0) {
+      dummyArr = classwiseStudent.filter(
+        (student) =>
+          student?.standard === Number(standard) &&
+          student?.name.toLowerCase().includes(name.toLowerCase())
+      );
+    } else if (name.length > 0) {
+      dummyArr = classwiseStudent.filter((student) =>
+        student?.name.toLowerCase().includes(name.toLowerCase())
+      );
+    } else if (standard.length > 0) {
+      dummyArr = classwiseStudent.filter(
+        (student) => student?.standard === Number(standard)
+      );
+    }
+    setFilteredStudents(dummyArr);
+  };
+
   return (
     <div className="mx-auto max-w-7xl  px-4 py-2 sm:py-6 sm:px-6 lg:px-8">
       <h2 className="text-2xl font-semibold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
@@ -94,6 +119,7 @@ const IssueSLC = () => {
           Search
         </button>
       </div>
+      <Filter handleFilterInput={handleFilterInput} />
       {studentDetail && (
         <Table
           tableData={[studentDetail]}
@@ -101,14 +127,14 @@ const IssueSLC = () => {
           handleClick={handleIssueClick}
         />
       )}
-      {classwiseStudent.length > 0 && !studentDetail ? (
+      {filteredStudents?.length > 0 && !studentDetail && (
         <Table
-        title="Students In School"
-          tableData={classwiseStudent}
+          title="Students In School"
+          tableData={filteredStudents}
           btn="Issue"
           handleClick={handleIssueClick}
         />
-      ):""}
+      )}
       {openConfirmPopup && (
         <Popup
           setOpen={setOpenConfirmPopup}
