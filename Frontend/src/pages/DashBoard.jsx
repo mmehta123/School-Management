@@ -2,11 +2,20 @@ import React, { useEffect, useState } from "react";
 import Table from "../components/Table.jsx";
 import axios from "axios";
 
+const countStudent = (students) => {
+  let count = 0;
+  students.forEach((student) => {
+    count += student?.Students;
+  });
+  return count;
+};
 const DashBoard = () => {
   const [students, setStudents] = useState([]);
+  const [totalStudent, setTotalStudent] = useState(0);
   async function getStudents() {
     const response = await axios.get("/api/student/classwisedata");
     setStudents(response.data.students);
+   setTotalStudent(countStudent(response.data.students));
   }
   useEffect(() => {
     getStudents();
@@ -22,7 +31,7 @@ const DashBoard = () => {
           <span className="   text-slate-200">Acedemic Year(2023-24)</span>
           <div>
             <h1 className="text-slate-200 text-4xl font-bold text-left mt-4">
-              85
+              {totalStudent}
             </h1>
             <p className="text-slate-200 text-left mt-2">
               Total Students Count In School
