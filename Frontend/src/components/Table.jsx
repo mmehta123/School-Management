@@ -1,21 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
 
-
-//function for formating date
-const formatDate = (dateString) => {
-  const date = new Date(dateString);
-  const day = date.getDate();
-  const month = date.getMonth() + 1; // Months are zero-based
-  const year = date.getFullYear();
-
-  // Add leading zeros if needed
-  const formattedDay = day < 10 ? `0${day}` : day;
-  const formattedMonth = month < 10 ? `0${month}` : month;
-
-  // Format as DD/MM/YYYY
-  return `${formattedDay}/${formattedMonth}/${year}`;
-};
-
 const Table = ({ tableData, title, sub, btn, handleClick, disableBtn }) => {
   const [headerArr, setHeaderArr] = useState([]);
   const [valuesArr, setValuesArr] = useState([]);
@@ -39,9 +23,6 @@ const Table = ({ tableData, title, sub, btn, handleClick, disableBtn }) => {
     }
     if (dataItem === false) {
       finalValue = "No";
-    }
-    if (dataItem === tableData[index]?.dob) {
-      finalValue = formatDate(dataItem);
     }
     return (
       <td

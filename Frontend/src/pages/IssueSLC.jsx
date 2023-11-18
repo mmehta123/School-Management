@@ -16,6 +16,8 @@ const IssueSLC = () => {
   const [slcSuccess, setSlcSuccess] = useState(false);
   const [filteredStudents, setFilteredStudents] = useState(null);
 
+  const [showFilters, setShowFilters] = useState(false);
+
   const slcFunction = async () => {
     const response = await axios.post("/api/student/issueSLC", {
       srn: selectedSrn,
@@ -47,6 +49,12 @@ const IssueSLC = () => {
     var numbers = /^[0-9]+$/;
     if (e.target.value.match(numbers) || e.target.value === "") {
       setInput({ ...input, [e.target.name]: e.target.value });
+    }
+    if (e.target.value === "") {
+      setFilteredStudents(classwiseStudent);
+      setStudentDetail(null);
+      setShowFilters(false)
+
     }
   };
   const handleSearch = async () => {
@@ -119,7 +127,20 @@ const IssueSLC = () => {
           Search
         </button>
       </div>
-      <Filter handleFilterInput={handleFilterInput} />
+      {!studentDetail && (
+        <div className="w-full relative p-2">
+          <button
+            onClick={() => {
+              setShowFilters((prev) => !prev);
+              setFilteredStudents(classwiseStudent);
+            }}
+            className=" text-blue-900 font-semibold right-0 absolute"
+          >
+            {!showFilters ? "Apply" : "Close"} Filter
+          </button>
+          {showFilters && <Filter handleFilterInput={handleFilterInput} />}
+        </div>
+      )}
       {studentDetail && (
         <Table
           tableData={[studentDetail]}
@@ -129,7 +150,7 @@ const IssueSLC = () => {
       )}
       {filteredStudents?.length > 0 && !studentDetail && (
         <Table
-          title="Students In School"
+          title="List Of Students"
           tableData={filteredStudents}
           btn="Issue"
           handleClick={handleIssueClick}

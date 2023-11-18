@@ -1,5 +1,6 @@
 const { Student, GlobalStudent } = require("../models/student");
 const errorHandler = require("../utils/error");
+const { formatDate } = require("../utils/formatDate");
 /////////////////////////Student Admission////////////////////
 const add = async (req, res, next) => {
   const { name, fathername, dob, aadhar, mothername, rollno, standard } =
@@ -168,9 +169,15 @@ const getAll = async (req, res, next) => {
         },
       },
     ]);
+
+    const formattedStudents = students.map((student) => ({
+      ...student,
+      dob: formatDate(student.dob),
+    }));
+
     return res.status(200).json({
       success: true,
-      students: students,
+      students: formattedStudents,
       message: "All Student List",
     });
   } catch (error) {
@@ -246,9 +253,10 @@ const searchStudentForSLC = async (req, res, next) => {
       updatedAt: d,
       ...rest
     } = student._doc;
+    const finalStudent={...rest,dob:formatDate(rest.dob)}
     return res.status(200).json({
       success: true,
-      student: rest,
+      student: finalStudent,
       message: "student found",
     });
   } catch (error) {

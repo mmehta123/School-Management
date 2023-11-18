@@ -21,7 +21,7 @@ const Filter = ({ handleFilterInput }) => {
     });
   };
   return (
-    <div className="p-4">
+    <div className="pb-2 ">
       <h2 className="text-xs mb-2 font-extralight leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
         Apply Filters
       </h2>
