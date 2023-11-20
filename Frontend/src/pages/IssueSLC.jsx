@@ -4,6 +4,7 @@ import axios from "axios";
 import Table from "../components/Table";
 import Popup from "../components/Popup";
 import Filter from "../components/Filter";
+import Notification from "../components/Notification";
 
 const IssueSLC = () => {
   const [input, setInput] = useState({ srn: "", aadhar: "" });
@@ -28,6 +29,10 @@ const IssueSLC = () => {
       setOpenConfirmPopup(false);
       setConfirmIssueSlc(false);
       setSlcSuccess(true);
+      //after 3 seconds msg gone
+      setTimeout(() => {
+        setSlcSuccess(false);
+      }, 3000);
     }
   };
   useEffect(() => {
@@ -53,8 +58,7 @@ const IssueSLC = () => {
     if (e.target.value === "") {
       setFilteredStudents(classwiseStudent);
       setStudentDetail(null);
-      setShowFilters(false)
-
+      setShowFilters(false);
     }
   };
   const handleSearch = async () => {
@@ -138,7 +142,13 @@ const IssueSLC = () => {
           >
             {!showFilters ? "Apply" : "Close"} Filter
           </button>
-          {showFilters && <Filter handleFilterInput={handleFilterInput} />}
+          <div
+            className={`overflow-hidden transition-all duration-1000 ${
+              showFilters ? "max-h-screen" : "max-h-0"
+            }`}
+          >
+            {showFilters && <Filter handleFilterInput={handleFilterInput} />}
+          </div>
         </div>
       )}
       {studentDetail && (
@@ -169,10 +179,9 @@ const IssueSLC = () => {
         />
       )}
       {slcSuccess && (
-        <Popup
-          title="SLC Granted !!!"
-          text={`Student is Availble For Readmission`}
-          setOpen={setSlcSuccess}
+        <Notification
+          header="SLC Granted !!!"
+          msg={`Student is Availble For Readmission`}
         />
       )}
     </div>
