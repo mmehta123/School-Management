@@ -147,7 +147,12 @@ const IssueSLC = () => {
               showFilters ? "max-h-screen" : "max-h-0"
             }`}
           >
-            {showFilters && <Filter handleFilterInput={handleFilterInput} />}
+            {showFilters && (
+              <Filter
+                setFilteredStudents={setFilteredStudents}
+                classwiseStudent={classwiseStudent}
+              />
+            )}
           </div>
         </div>
       )}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import FormField from "./FormField";
 
-const Filter = ({ handleFilterInput }) => {
+const Filter = ({ setFilteredStudents, classwiseStudent }) => {
   const [obj, setObj] = useState({
     standard: "",
     name: "",
@@ -20,12 +20,33 @@ const Filter = ({ handleFilterInput }) => {
       name: "",
     });
   };
+
+  //function for filter
+  const handleFilterInput = ({ name, standard }) => {
+    let dummyArr = classwiseStudent;
+    if (name.length > 0 && standard.length > 0) {
+      dummyArr = classwiseStudent.filter(
+        (student) =>
+          student?.standard === Number(standard) &&
+          student?.name.toLowerCase().includes(name.toLowerCase())
+      );
+    } else if (name.length > 0) {
+      dummyArr = classwiseStudent.filter((student) =>
+        student?.name.toLowerCase().includes(name.toLowerCase())
+      );
+    } else if (standard.length > 0) {
+      dummyArr = classwiseStudent.filter(
+        (student) => student?.standard === Number(standard)
+      );
+    }
+    setFilteredStudents(dummyArr);
+  };
   return (
     <div className="pb-2 ">
-      <h2 className="text-xs mb-2 font-extralight leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
-        Apply Filters
+      <div className="flex gap-x-2 sm:flex-row sm:gap-y-0 gap-y-1 flex-col items-center justify-center">
+      <h2 className=" mb-2 p-2 font-extralight leading-7 text-gray-900 hidden sm:block  text-3xl sm:tracking-tight">
+        Filter
       </h2>
-      <div className="flex gap-x-2">
         <div className="w-1/3 ">
           <select
             required
@@ -57,7 +78,7 @@ const Filter = ({ handleFilterInput }) => {
           <button
             type="button"
             onClick={handleReset}
-            className="w-1/2 px-2 py-2 m-[0.20rem] border border-transparent  font-medium rounded-md shadow-sm text-white bg-red-800 hover:bg-red-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+            className="w-1/2  px-2 py-2 text-center m-[0.20rem] border border-transparent  font-medium rounded-md shadow-sm text-white bg-red-800 hover:bg-red-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
           >
             Reset
           </button>

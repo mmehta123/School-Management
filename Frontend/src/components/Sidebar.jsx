@@ -8,6 +8,7 @@ import {
   PresentationChartBarIcon,
   UsersIcon,
   XMarkIcon,
+  ListBulletIcon,
 } from "@heroicons/react/24/outline";
 import { Fragment, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -18,6 +19,7 @@ import ReAddmission from "../pages/ReAddmission.jsx";
 import Reports from "../pages/Reports.jsx";
 import DashBoard from "../pages/DashBoard.jsx";
 import SchoolProfile from "../pages/SchoolProfile.jsx";
+import ClassListing from "../pages/ClassListing.jsx";
 
 const navigation = [
   { name: "School Dashboard", icon: HomeIcon, current: true },
@@ -29,6 +31,11 @@ const navigation = [
   {
     name: "Reports",
     icon: PresentationChartBarIcon,
+    current: false,
+  },
+  {
+    name: "Listings",
+    icon: ListBulletIcon,
     current: false,
   },
 ];
@@ -49,6 +56,8 @@ const RenderMainContent = (index) => {
       return <ReAddmission />;
     case 6:
       return <Reports />;
+    case 7:
+      return <ClassListing />;
     default:
       return <Home />;
   }
