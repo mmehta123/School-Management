@@ -22,46 +22,68 @@ import SchoolProfile from "../pages/SchoolProfile.jsx";
 import ClassListing from "../pages/ClassListing.jsx";
 
 const navigation = [
-  { name: "School Dashboard", icon: HomeIcon, current: true },
-  { name: "Addmission", icon: PlusCircleIcon, current: false },
-  { name: "Student Profile", icon: UsersIcon, current: false },
-  { name: "School Profile", icon: UsersIcon, current: false },
-  { name: "Issue SLC", icon: DocumentArrowUpIcon, current: false },
-  { name: "ReAdmission", icon: ArrowLeftCircleIcon, current: false },
+  { name: "School Dashboard", icon: HomeIcon, current: true, link: "/" },
+  {
+    name: "Addmission",
+    icon: PlusCircleIcon,
+    current: false,
+    link: "/addmission",
+  },
+  {
+    name: "Student Profile",
+    icon: UsersIcon,
+    current: false,
+    link: "/student",
+  },
+  { name: "School Profile", icon: UsersIcon, current: false, link: "/school" },
+  {
+    name: "Issue SLC",
+    icon: DocumentArrowUpIcon,
+    current: false,
+    link: "/issue-slc",
+  },
+  {
+    name: "ReAdmission",
+    icon: ArrowLeftCircleIcon,
+    current: false,
+    link: "/re-addmission",
+  },
   {
     name: "Reports",
     icon: PresentationChartBarIcon,
     current: false,
+    link: "/reports",
   },
   {
     name: "Listings",
     icon: ListBulletIcon,
     current: false,
+    link: "/listings",
   },
 ];
 
-const RenderMainContent = (index) => {
-  switch (index) {
-    case 0:
-      return <DashBoard />;
-    case 1:
-      return <Addmission />;
-    case 2:
-      return <StudentProfile />;
-    case 3:
-      return <SchoolProfile />;
-    case 4:
-      return <IssueSLC />;
-    case 5:
-      return <ReAddmission />;
-    case 6:
-      return <Reports />;
-    case 7:
-      return <ClassListing />;
-    default:
-      return <Home />;
-  }
-};
+// const RenderMainContent = (index) => {
+//   switch (index) {
+//     case 0:
+//       return <DashBoard />;
+//     case 1:
+//       return <Addmission />;
+//     case 2:
+//       return <StudentProfile />;
+//     case 3:
+//       return <SchoolProfile />;
+//     case 4:
+//       return <IssueSLC />;
+//     case 5:
+//       return <ReAddmission />;
+//     case 6:
+//       return <Reports />;
+//     case 7:
+//       return <ClassListing />;
+//     default:
+//       return <Home />;
+//   }
+// };
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -73,7 +95,7 @@ export default function Sidebar() {
   const [currentTab, setCurrentTab] = useState(0);
 
   const handleSidebarNavClick = (index, mobile) => {
-    //this willnot work if we do
+    //this will not work if we do
     // dummyArr=navoptions because it is a deep copy same ref
     if (mobile) {
       setSidebarOpen(false);
@@ -154,24 +176,26 @@ export default function Sidebar() {
                     <nav className="mt-5 space-y-1 px-2">
                       {navOptions.map((item, index) => {
                         return (
-                          <div
-                            onClick={() =>
-                              handleSidebarNavClick(index, "mobile")
-                            }
-                            key={item.name}
-                            className={classNames(
-                              item.current
-                                ? "bg-white text-slate-600"
-                                : "text-white hover:bg-slate-100 hover:bg-opacity-20",
-                              "group cursor-pointer flex items-center px-2 py-2 text-base font-medium rounded-md"
-                            )}
-                          >
-                            <item.icon
-                              className="mr-4 h-6 w-6 flex-shrink-0 text-indigo-300"
-                              aria-hidden="true"
-                            />
-                            {item.name}
-                          </div>
+                          <Link to={item.link}>
+                            <div
+                              onClick={() =>
+                                handleSidebarNavClick(index, "mobile")
+                              }
+                              key={item.name}
+                              className={classNames(
+                                item.current
+                                  ? "bg-white text-slate-600"
+                                  : "text-white hover:bg-slate-100 hover:bg-opacity-20",
+                                "group cursor-pointer flex items-center px-2 py-2 text-base font-medium rounded-md"
+                              )}
+                            >
+                              <item.icon
+                                className="mr-4 h-6 w-6 flex-shrink-0 text-indigo-300"
+                                aria-hidden="true"
+                              />
+                              {item.name}
+                            </div>
+                          </Link>
                         );
                       })}
                     </nav>
@@ -190,27 +214,31 @@ export default function Sidebar() {
           <div className=" flex min-h-0 flex-1 flex-col bg-[#191a56]">
             <div className="flex flex-1 flex-col overflow-y-auto pt-5 pb-4">
               <div className="flex flex-shrink-0 items-center px-4">
-                <h2 className="text-white">Welcome School Name</h2>
+                <h2 className="text-white">Desktop sidebar</h2>
               </div>
               <nav className="mt-5 flex-1 space-y-1 px-2">
-                {navOptions.map((item, index) => (
-                  <div
-                    onClick={() => handleSidebarNavClick(index)}
-                    key={item.name}
-                    className={classNames(
-                      item.current
-                        ? "bg-white text-slate-600"
-                        : "text-white hover:bg-slate-100 hover:bg-opacity-20",
-                      "group flex cursor-pointer items-center px-2 py-2 text-sm font-medium rounded-md"
-                    )}
-                  >
-                    <item.icon
-                      className="mr-3 h-6 w-6 flex-shrink-0 text-indigo-300"
-                      aria-hidden="true"
-                    />
-                    {item.name}
-                  </div>
-                ))}
+                {navOptions.map((item, index) => {
+                  return (
+                    <Link to={item.link}>
+                      <div
+                        onClick={() => handleSidebarNavClick(index)}
+                        key={item.name}
+                        className={classNames(
+                          item.current
+                            ? "bg-white text-slate-600"
+                            : "text-white hover:bg-slate-100 hover:bg-opacity-20",
+                          "group flex cursor-pointer items-center px-2 py-2 text-sm font-medium rounded-md"
+                        )}
+                      >
+                        <item.icon
+                          className="mr-3 h-6 w-6 flex-shrink-0 text-indigo-300"
+                          aria-hidden="true"
+                        />
+                        {item.name}
+                      </div>
+                    </Link>
+                  );
+                })}
               </nav>
             </div>
           </div>
@@ -226,7 +254,7 @@ export default function Sidebar() {
               <Bars3Icon className="h-6 w-6" aria-hidden="true" />
             </button>
           </div>
-          <main className="flex-1">{RenderMainContent(currentTab)}</main>
+          {/* <main className="flex-1">{RenderMainContent(currentTab)}</main> */}
         </div>
       </div>
     </>
