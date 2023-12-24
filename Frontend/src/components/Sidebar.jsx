@@ -1,89 +1,10 @@
 import { Dialog, Transition } from "@headlessui/react";
-import {
-  ArrowLeftCircleIcon,
-  Bars3Icon,
-  DocumentArrowUpIcon,
-  HomeIcon,
-  PlusCircleIcon,
-  PresentationChartBarIcon,
-  UsersIcon,
-  XMarkIcon,
-  ListBulletIcon,
-} from "@heroicons/react/24/outline";
-import { Fragment, useEffect, useState } from "react";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Fragment, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import Addmission from "../pages/Addmission";
-import StudentProfile from "../pages/StudentProfile";
-import IssueSLC from "../pages/IssueSLC";
-import ReAddmission from "../pages/ReAddmission.jsx";
-import Reports from "../pages/Reports.jsx";
-import DashBoard from "../pages/DashBoard.jsx";
-import SchoolProfile from "../pages/SchoolProfile.jsx";
-import ClassListing from "../pages/ClassListing.jsx";
-
-const navigation = [
-  { name: "School Dashboard", icon: HomeIcon, current: true, link: "/" },
-  {
-    name: "Addmission",
-    icon: PlusCircleIcon,
-    current: false,
-    link: "/addmission",
-  },
-  {
-    name: "Student Profile",
-    icon: UsersIcon,
-    current: false,
-    link: "/student",
-  },
-  { name: "School Profile", icon: UsersIcon, current: false, link: "/school" },
-  {
-    name: "Issue SLC",
-    icon: DocumentArrowUpIcon,
-    current: false,
-    link: "/issue-slc",
-  },
-  {
-    name: "ReAdmission",
-    icon: ArrowLeftCircleIcon,
-    current: false,
-    link: "/re-addmission",
-  },
-  {
-    name: "Reports",
-    icon: PresentationChartBarIcon,
-    current: false,
-    link: "/reports",
-  },
-  {
-    name: "Listings",
-    icon: ListBulletIcon,
-    current: false,
-    link: "/listings",
-  },
-];
-
-// const RenderMainContent = (index) => {
-//   switch (index) {
-//     case 0:
-//       return <DashBoard />;
-//     case 1:
-//       return <Addmission />;
-//     case 2:
-//       return <StudentProfile />;
-//     case 3:
-//       return <SchoolProfile />;
-//     case 4:
-//       return <IssueSLC />;
-//     case 5:
-//       return <ReAddmission />;
-//     case 6:
-//       return <Reports />;
-//     case 7:
-//       return <ClassListing />;
-//     default:
-//       return <Home />;
-//   }
-// };
+import { changeNavOptions } from "../redux/dashboard/dashboardSlice.js";
+import Icons from "../utils/Icons.jsx";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -91,27 +12,15 @@ function classNames(...classes) {
 
 export default function Sidebar() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [navOptions, setNavOptions] = useState(navigation);
-  const [currentTab, setCurrentTab] = useState(0);
-
+  const dispatch = useDispatch();
+  const { options } = useSelector((state) => state.dashboard);
   const handleSidebarNavClick = (index, mobile) => {
     //this will not work if we do
     // dummyArr=navoptions because it is a deep copy same ref
     if (mobile) {
       setSidebarOpen(false);
     }
-    const dummyArr = [...navOptions];
-    dummyArr.map((item, i) => {
-      if (i === index) {
-        //this is to open the component
-        setCurrentTab(index);
-        //this is to make active color in sidebar options
-        item.current = true;
-      } else {
-        item.current = false;
-      }
-    });
-    setNavOptions(dummyArr);
+    dispatch(changeNavOptions(index));
   };
 
   return (
@@ -174,7 +83,7 @@ export default function Sidebar() {
                       <h3 className="text-white">Welcome, School Name</h3>
                     </div>
                     <nav className="mt-5 space-y-1 px-2">
-                      {navOptions.map((item, index) => {
+                      {options.map((item, index) => {
                         return (
                           <Link to={item.link}>
                             <div
@@ -217,7 +126,7 @@ export default function Sidebar() {
                 <h2 className="text-white">Desktop sidebar</h2>
               </div>
               <nav className="mt-5 flex-1 space-y-1 px-2">
-                {navOptions.map((item, index) => {
+                {options.map((item, index) => {
                   return (
                     <Link to={item.link}>
                       <div
@@ -230,10 +139,8 @@ export default function Sidebar() {
                           "group flex cursor-pointer items-center px-2 py-2 text-sm font-medium rounded-md"
                         )}
                       >
-                        <item.icon
-                          className="mr-3 h-6 w-6 flex-shrink-0 text-indigo-300"
-                          aria-hidden="true"
-                        />
+                        {Icons(item.icon)}
+
                         {item.name}
                       </div>
                     </Link>
@@ -253,8 +160,7 @@ export default function Sidebar() {
               <span className="sr-only">Open sidebar</span>
               <Bars3Icon className="h-6 w-6" aria-hidden="true" />
             </button>
-          </div>
-          {/* <main className="flex-1">{RenderMainContent(currentTab)}</main> */}
+          </div>{" "}
         </div>
       </div>
     </>
