@@ -10,6 +10,8 @@ import Signup from "./pages/Signup";
 import PrivateRoute from "./components/PrivateRoutes";
 import Sidebar from "./components/Sidebar";
 import ReAddmission from "./pages/ReAddmission";
+import ClassListing from "./pages/ClassListing";
+import Reports from "./pages/Reports";
 
 //This will make sidebar fixed in every component and will be visible on every page except sign in and signout
 const PrivateLayout = ({ children }) => {
@@ -40,7 +42,8 @@ const App = () => {
           <Route path="/addmission" element={<Addmission />} />
           <Route path="/issue-slc" element={<IssueSLC />} />
           <Route path="/re-addmission" element={<ReAddmission />} />
-          {/* <Route path="/listings" element={<Listings />} /> */}
+          <Route path="/listings" element={<ClassListing />} />
+          <Route path="/reports" element={<Reports />} />
         </Route>
       </Routes>
     </BrowserRouter>
