@@ -1,12 +1,8 @@
-import {
-  combineReducers,
-  configureStore,
-  getDefaultMiddleware,
-} from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
-import userReducer from "./user/userSlice";
-import dashboardReducer from "./dashboard/dashboardSlice";
 import storage from "redux-persist/lib/storage";
+import dashboardReducer from "./dashboard/dashboardSlice";
+import userReducer from "./user/userSlice";
 
 const persistConfigs = {
   key: "root",
@@ -15,16 +11,12 @@ const persistConfigs = {
 };
 
 const rootReducer = combineReducers({
-  user: userReducer,
+  //only user state will be persisted not the dashboard items
+  user: persistReducer(persistConfigs, userReducer),
   dashboard: dashboardReducer,
 });
-const persistedReducer = persistReducer(persistConfigs, rootReducer);
 
 export const store = configureStore({
-  reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: false,
-    }),
+  reducer: rootReducer,
 });
 export const persistor = persistStore(store);
