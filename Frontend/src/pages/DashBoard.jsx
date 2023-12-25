@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
-import Table from "../components/Table.jsx";
 import axios from "axios";
+import React, { useEffect, useLayoutEffect, useState } from "react";
+import Table from "../components/Table.jsx";
+import { useDispatch } from "react-redux";
+import { changeNavOptions } from "../redux/dashboard/dashboardSlice.js";
 
 const countStudent = (students) => {
   let count = 0;
@@ -9,16 +11,22 @@ const countStudent = (students) => {
   });
   return count;
 };
+
 const DashBoard = () => {
   const [students, setStudents] = useState([]);
   const [totalStudent, setTotalStudent] = useState(0);
+  const dispatch = useDispatch();
   async function getStudents() {
     const response = await axios.get("/api/student/classwisedata");
     setStudents(response.data.students);
-   setTotalStudent(countStudent(response.data.students));
+    setTotalStudent(countStudent(response.data.students));
   }
   useEffect(() => {
     getStudents();
+  }, []);
+  
+  useLayoutEffect(() => {
+    dispatch(changeNavOptions(0));
   }, []);
   return (
     <div className="mx-auto max-w-7xl bg-slate-200 px-4 py-2 sm:py-6 sm:px-6 lg:px-8">

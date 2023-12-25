@@ -1,9 +1,13 @@
-import React from 'react'
-
+import React, { useLayoutEffect } from "react";
+import { useDispatch } from "react-redux";
+import { changeNavOptions } from "../redux/dashboard/dashboardSlice";
 const SchoolProfile = () => {
-  return (
-    <div>SchoolProfile</div>
-  )
-}
+  const dispatch = useDispatch();
 
-export default SchoolProfile
+  useLayoutEffect(() => {
+    dispatch(changeNavOptions(3));
+  }, []);
+  return <div>SchoolProfile</div>;
+};
+
+export default SchoolProfile;

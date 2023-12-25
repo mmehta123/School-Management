@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import Popup from "../components/Popup";
 import FormField from "../components/FormField";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { changeNavOptions } from "../redux/dashboard/dashboardSlice";
 
 const tableData = [
   {
@@ -45,6 +47,11 @@ const Addmission = () => {
     hryResident: true,
     state: "Haryana",
   });
+  const dispatch = useDispatch();
+
+  useLayoutEffect(() => {
+    dispatch(changeNavOptions(1));
+  }, []);
 
   const handleInputChange = (e) => {
     if (e.target.name === "hryResident") {

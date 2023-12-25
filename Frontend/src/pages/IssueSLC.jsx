@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import FormField from "../components/FormField";
 import axios from "axios";
 import Table from "../components/Table";
 import Popup from "../components/Popup";
 import Filter from "../components/Filter";
 import Notification from "../components/Notification";
-
+import { useDispatch } from "react-redux";
+import { changeNavOptions } from "../redux/dashboard/dashboardSlice";
 const IssueSLC = () => {
   const [input, setInput] = useState({ srn: "", aadhar: "" });
   const [studentDetail, setStudentDetail] = useState(null);
@@ -18,7 +19,11 @@ const IssueSLC = () => {
   const [filteredStudents, setFilteredStudents] = useState(null);
 
   const [showFilters, setShowFilters] = useState(false);
-
+  const dispatch = useDispatch();
+  useLayoutEffect(() => {
+    dispatch(changeNavOptions(4));
+  }, []);
+  
   const slcFunction = async () => {
     const response = await axios.post("/api/student/issueSLC", {
       srn: selectedSrn,

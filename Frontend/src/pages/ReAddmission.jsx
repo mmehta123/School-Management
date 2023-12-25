@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import FormField from "../components/FormField";
 import axios from "axios";
 import Table from "../components/Table";
 import Popup from "../components/Popup";
-
+import { useDispatch } from "react-redux";
+import { changeNavOptions } from "../redux/dashboard/dashboardSlice";
 const ReAddmission = () => {
   const [input, setInput] = useState({ srn: "", aadhar: "" });
   const [studentDetail, setStudentDetail] = useState(null);
@@ -13,12 +14,17 @@ const ReAddmission = () => {
   const [selectedSrn, setSelectedSrn] = useState(null);
   const [admitSuccess, setAdmitSuccess] = useState(false);
   const [disableBtn, setDisableBtn] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (confirmAdmit) {
       admitFunction();
     }
   }, [confirmAdmit]);
+ 
+  useLayoutEffect(() => {
+    dispatch(changeNavOptions(5));
+  }, []);
 
   const handleChange = (e) => {
     var numbers = /^[0-9]+$/;
